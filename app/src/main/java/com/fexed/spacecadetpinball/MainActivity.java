@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.OptionalInt;
 
 import com.fexed.spacecadetpinball.databinding.ActivityMainBinding;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -385,6 +386,42 @@ public class MainActivity extends SDLActivity {
             String str = getString(R.string.remainingballs, remainingBalls);
             mBinding.ballstxt.setText(str);
         }
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // Remap arrow keys to plungers
+        OptionalInt remappedKeyCode = OptionalInt.empty();
+        if (!PrefsHelper.getTiltButtons()) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_DPAD_UP:
+                case KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP:
+                    return false;
+                case KeyEvent.KEYCODE_MENU:
+                    remappedKeyCode = OptionalInt.of(KeyEvent.KEYCODE_F2);
+                    break;
+                case KeyEvent.KEYCODE_SYSTEM_NAVIGATION_LEFT:
+                case KeyEvent.KEYCODE_DPAD_LEFT:
+                    remappedKeyCode = OptionalInt.of(KeyEvent.KEYCODE_Z);
+                    break;
+                case KeyEvent.KEYCODE_SYSTEM_NAVIGATION_RIGHT:
+                case KeyEvent.KEYCODE_DPAD_RIGHT:
+                    remappedKeyCode = OptionalInt.of(KeyEvent.KEYCODE_SLASH);
+                    break;
+            }
+        }
+        return super.dispatchKeyEvent((remappedKeyCode.isPresent()) ? new KeyEvent(
+            event.getDownTime(),
+            event.getEventTime(),
+            event.getAction(),
+            remappedKeyCode.getAsInt(),
+            event.getRepeatCount(),
+            event.getMetaState(),
+            event.getDeviceId(),
+            event.getScanCode(),
+            event.getFlags(),
+            event.getSource()
+        ) : event);
     }
 
     private void configurePlunger() {
