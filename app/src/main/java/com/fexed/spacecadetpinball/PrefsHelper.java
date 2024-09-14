@@ -84,7 +84,7 @@ public class PrefsHelper {
     }
 
     public static boolean getTiltButtons() {
-        return prefs.getBoolean(KEY_TILTBUTTONS, true);
+        return prefs.getBoolean(KEY_TILTBUTTONS, false);
     }
 
     public static void setTiltButtons(boolean value) {
