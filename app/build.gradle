@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.fexed.spacecadetpinball"
-        minSdk 19
+        minSdk 24
         targetSdk 33
         versionCode 13
         versionName "2.5"
@@ -30,7 +30,7 @@ android {
     externalNativeBuild {
         cmake {
             path file('src/main/cpp/CMakeLists.txt')
-            version '3.22.1'
+            version '3.30.3'
         }
     }
 
